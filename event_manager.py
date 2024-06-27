@@ -5,16 +5,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 EVENTBRIGHT_ENDPOINT = "https://www.eventbriteapi.com/v3/"
+api_key = os.environ["EVENTBRITE_API"]
 
 
-class DataManager:
+class EventManager:
     def __init__(self) -> None:
-        self.api_key = os.environ["EVENTBRITE_API"]
         self.org = os.environ["EVENTBRITE_ORGANIZATION_ID"]
-        self.api_params = {"token": self.api_key}
+        self.api_params = {"token": api_key}
 
     def get_org_events(self):
-        # Get all of Health Dialogues events
+        # Get all of Healthy Dialogues events
 
         response = requests.get(
             url=f"{EVENTBRIGHT_ENDPOINT}/organizations/{self.org}/events/",
@@ -22,7 +22,6 @@ class DataManager:
         )
         response.raise_for_status()
         data = response.json()
-
         print(data)
 
     def get_order_details(self):
@@ -35,6 +34,6 @@ class DataManager:
         print(data)
 
 
-data_manager = DataManager()
+data_manager = EventManager()
 
 data_manager.get_order_details()
