@@ -1,5 +1,5 @@
-from data_manager import DataManager
+from event_manager import EventManager
 
-data_manager = DataManager()
+event_manager = EventManager()
 
-data_manager.get_org_events()
+event_manager.get_org_events()
