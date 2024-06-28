@@ -1,5 +1,6 @@
 from event_manager import EventManager
+from pprint import pprint
 
 event_manager = EventManager()
 
-event_manager.get_org_events()
+pprint(event_manager.get_attendee_details())
