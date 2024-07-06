@@ -1,4 +1,9 @@
 .env
 __pycache__/
 .venv/
+<<<<<<< HEAD
 assets/
+=======
+assets/
+certificates/
+>>>>>>> 41ab3755fc432c9a5b1882931f8188d936fab1cf
