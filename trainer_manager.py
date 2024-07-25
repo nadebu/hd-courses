@@ -4,13 +4,16 @@ Future iterations of this will create a join between the list of trainers and th
 """
 
 import pandas as pd
+from pathlib import Path
+
+trainer_file = Path("assets").joinpath("trainers").joinpath("Training Schedule.xlsx")
 
 
 class TrainerManager:
 
     def get_trainers(self) -> pd.DataFrame:
         df_trainers = pd.read_excel(
-            "assets\\trainers\\Training Schedule.xlsx",
+            trainer_file,
             sheet_name=0,  # Rather than hard coding the name of the sheet, uses first sheet
             skiprows=13,
             usecols="B:R",
