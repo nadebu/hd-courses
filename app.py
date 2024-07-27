@@ -2,7 +2,7 @@ import streamlit as st
 
 st.title("Certicate Generator")
 st.subheader(
-    "This app will generate certificates for the Norfolk MECC Level 1 and 2 training"
+    "This resource will generate certificates for the Norfolk MECC Level 1 and 2 training"
 )
 
 
