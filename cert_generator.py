@@ -4,52 +4,26 @@ import os
 import pandas as pd
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
-from datetime import date
-import tkinter as tk
-from tkinter import filedialog as fd
+import streamlit as st
 
 
 class CertGenerator:
 
-    def load_file(self):
-        # Create a Tkinter root window (it will not be shown)
-        root = tk.Tk()
-        root.withdraw()  # Hide the root window
+    def __init__(self, level, trainer, crs_date, attendee_df) -> None:
+        self.level = level
+        self.trainer = trainer
+        self.crs_date = crs_date
+        self.attendee_df = attendee_df
 
-        # Open a file dialog to select the Excel or CSV file
-        file_path = fd.askopenfilename(
-            title="Select an Excel or CSV file",
-            filetypes=[("Excel files", "*.xlsx *.xls"), ("CSV files", "*.csv")],
-        )
-
-        # Check if a file was selected
-        if not file_path:
-            print("No file selected.")
-            return None
-
-        # Determine the file type and read the file into a pandas DataFrame
-        if file_path.endswith(".xlsx") or file_path.endswith(".xls"):
-            df = pd.read_excel(file_path, engine="openpyxl")
-        elif file_path.endswith(".csv"):
-            df = pd.read_csv(file_path)
-        else:
-            print("Unsupported file type.")
-            return None
-
-        # Check if the DataFrame is loaded and print the first few rows
-        if df is not None:
-            print("File loaded successfully!")
-            return df
-        else:
-            print("Failed to load the file.")
+    def remove_organiser(self):
+        """
+        Takes in the attendee dataframe and remove any attendee listed as an organizer
+        """
+        self.attendee_df = self.attendee_df[self.attendee_df["role"] != "Organizer"]
 
     def generate_certs(self):
-        df_attendees = self.load_file()
-        df_attendees = df_attendees[
-            df_attendees["role"] != "Organizer"
-        ]  # To exclude trainer
-        trainee_list = df_attendees["name"].to_list()
-        course_date = date.today().strftime("%d %B %Y")
+        trainee_list = self.attendee_df["name"].to_list()
+        course_date = self.crs_date.strftime("%d %B %Y")
 
         pos1 = (340, 290)
         pos2 = (360, 173)
@@ -76,8 +50,38 @@ class CertGenerator:
             packet.seek(0)
             new_pdf = PdfReader(packet)
 
-            # The certificates currently highlight the text box. Revisit
-            cert_template = "assets\\level_1_templates\\Eleanor.pdf"
+            template_paths = {
+                (
+                    "Level 1",
+                    "Ashlee",
+                ): "templates\\level_1_templates\\Ashlee_Level_1.pdf",
+                (
+                    "Level 1",
+                    "Eleanor",
+                ): "templates\\level_1_templates\\Eleanor_Level_1.pdf",
+                ("Level 1", "Helen"): "templates\\level_1_templates\\Helen_Level_1.pdf",
+                ("Level 1", "Phil"): "templates\\level_1_templates\\Phil_Level_1.pdf",
+                (
+                    "Level 1",
+                    "Rebecca",
+                ): "templates\\level_1_templates\\Rebecca_Level_1.pdf",
+                (
+                    "Level 2",
+                    "Ashlee",
+                ): "templates\\level_2_templates\\Ashlee_Level_2.pdf",
+                (
+                    "Level 2",
+                    "Eleanor",
+                ): "templates\\level_2_templates\\Eleanor_Level_2.pdf",
+                ("Level 2", "Helen"): "templates\\level_2_templates\\Helen_Level_2.pdf",
+                ("Level 2", "Phil"): "templates\\level_2_templates\\Phil_Level_2.pdf",
+                (
+                    "Level 2",
+                    "Rebecca",
+                ): "templates\\level_2_templates\\Rebecca_Level_2.pdf",
+            }
+
+            cert_template = template_paths.get((self.level, self.trainer))
 
             template_pdf = PdfReader(open(cert_template, "rb"))
 
@@ -89,4 +93,4 @@ class CertGenerator:
             outputStream = open(destination, "wb")
             output.write(outputStream)
             outputStream.close()
-            print("Created " + name + ".pdf")
+            st.write("Created " + name + ".pdf")
