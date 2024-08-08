@@ -2,6 +2,19 @@ from datetime import date
 import pandas as pd
 import streamlit as st
 
+from event_manager import EventManager
+from cert_generator import CertGenerator
+from trainer_manager import TrainerManager
+
+# event_manager = EventManager()
+# print(event_manager.get_org_events())
+
+
+
+# trainer_manager = TrainerManager()
+# print(trainer_manager.get_trainers())
+
+
 today = date.today()
 
 st.title("Certicate Generator")
@@ -53,4 +66,8 @@ st.divider()
 
 if st.button("Press to generate certicates"):
     st.write("Certificates are being generated")
+
+    cert_generator = CertGenerator(level=level_option, trainer=trainer_option, crs_date=course_date, attendee_df=df)
+    cert_generator.remove_organiser()
+    cert_generator.generate_certs()
 
