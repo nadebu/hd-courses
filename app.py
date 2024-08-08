@@ -7,17 +7,12 @@ from cert_generator import CertGenerator
 from trainer_manager import TrainerManager
 
 # event_manager = EventManager()
-# print(event_manager.get_org_events())
-
-
 
 # trainer_manager = TrainerManager()
-# print(trainer_manager.get_trainers())
-
 
 today = date.today()
 
-st.title("Certicate Generator")
+st.title(":mortar_board: Certificate Generator :mortar_board:")
 st.subheader(
     "This resource will generate certificates for the Norfolk MECC Level 1 and 2 training"
 )
